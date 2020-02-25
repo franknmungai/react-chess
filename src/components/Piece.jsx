@@ -3,28 +3,13 @@ import React from 'react';
 const Piece = props => {
 	return (
 		<span
-			piece={props.cell}
+			className={`piece ${props.light ? 'light' : 'dark'}`}
+			piece={props.piece}
 			color={props.color}
-			onClick={event => {
-				// const color =
-				//     isNaN(cell) && cell === cell.toUpperCase() ? 'b' : 'w';
-				console.log(props.chess.moves({ square: 'g1' }));
-				const successful = props.chess.makeMove(
-					props.chess,
-					props.cell.toString(),
-					props.color,
-					'b5'
-				);
-
-				if (successful) {
-					props.chess.remove('a2');
-					props.setFen(props.chess.fen()); //re-render component
-				}
-			}}
+			onClick={() => props.onClick(props.pos, props.color)}
 		>
-			{props.cell}
+			{props.piece}
 		</span>
 	);
 };
-
 export default Piece;

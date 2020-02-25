@@ -15,12 +15,12 @@
 .piece {
 	text-align: center;
 	/* margin: 8px; */
-	border: wheat solid 2px;
+	/* border: wheat solid 2px; */
 }
 
-.piece:nth-child(odd) {
-	background-color: #efefef;
+.light {
+	background-color: rgb(235, 228, 219); /*#efefef;*/
 }
-.piece:nth-child(even) {
-	background-color: #e7e4e4;
+.dark {
+	background-color: #b6b3b3;
 }
