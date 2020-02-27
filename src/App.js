@@ -3,7 +3,7 @@ import Chess from 'chess.js';
 import Board from './components/Board';
 import { lightSquare, createBoard, createFenArray } from './functions/game';
 import './App.css';
-import Piece from './components/Piece';
+import Cell from './components/Cell';
 
 //Make a move and return a new fen
 // const makeMove = (chess, piece, color, position) => {
@@ -24,7 +24,7 @@ const App = props => {
 
 	// ? Creating the chess pieces
 	let markup = board.map((cell, index) => (
-		<Piece
+		<Cell
 			piece={cell.piece}
 			pos={cell.name}
 			key={index}
@@ -38,7 +38,7 @@ const App = props => {
 			}
 			onClick={(pos, color) => {
 				console.log(pos, color);
-				chess.put({ type: 'p', color: 'w' }, 'a3'); //TODO:Check if board is updated when fen changes
+				chess.put({ type: 'p', color: 'w' }, 'a3'); //TODO:Check if board is updated when fen changes in state
 			}}
 		/>
 	));
