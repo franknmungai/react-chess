@@ -5,17 +5,20 @@
 	box-shadow: 4px 4px 15px #e0dfdf;
 	max-width: 700px;
 	min-width: 500px;
-	height: 85vh;
+	/* height: 90vh; */
 	display: grid;
 	grid-template-columns: repeat(8, 1fr);
 	background-color: burlywood;
-	/* transform: rotateX(180deg); */
 }
 
 .piece {
 	text-align: center;
-	/* margin: 8px; */
-	/* border: wheat solid 2px; */
+	padding: 0.25rem 0.35rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 77px;
+	height: 60px;
 }
 
 .light {
