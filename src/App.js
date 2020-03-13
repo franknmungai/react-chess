@@ -14,7 +14,7 @@ const App = props => {
 	//The FEN representation of the board. Stored in state
 	const [fen, setFen] = useState(
 		'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
-	);
+	); //TODO: Get from ls
 
 	const chess = new Chess(fen);
 	const turn = useRef(chess.turn()); //Control the turn

@@ -11,7 +11,7 @@ import wK from '../images/wK.png';
 import wN from '../images/wN.png';
 import wP from '../images/wP.png';
 import wQ from '../images/wQ.png';
-import wR from '../images/wK.png';
+import wR from '../images/wR.png';
 
 //* Movable piece of the game
 
@@ -65,6 +65,7 @@ const Piece = props => {
 			onDrop={() => {
 				// props.onDrop(props.)
 			}}
+			onDragEnd={() => (element.current.style.display = 'inline')}
 		/>
 	);
 };
