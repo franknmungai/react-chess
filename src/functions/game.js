@@ -53,7 +53,7 @@ export const createFenArray = fen => {
 	Array.from(stringBoard).forEach((char, index) => {
 		if (!isNaN(+char)) {
 			//if is a number, hence empty piece.
-			localBoard.splice(index, 1, range(1, char).fill(1));
+			localBoard.splice(index, 1, range(1, char).fill('1'));
 		}
 	});
 
@@ -84,3 +84,13 @@ export const createBoard = fenArray => {
 	return board;
 };
 export const highlightPossibleMoves = turn => {};
+export const makeMove = (chess, piece, from, to) => {
+	//*must take in the current instance of chess from the main game component
+
+	console.log(piece, from, to);
+	let color = piece.toUpperCase() === piece ? 'w' : 'b';
+
+	//TODO: Validate move
+	chess.put({ type: piece, color: color }, to);
+	chess.remove(from);
+};

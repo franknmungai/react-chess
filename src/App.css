@@ -27,3 +27,12 @@
 .dark {
 	background-color: #b6b3b3;
 }
+
+.invisible {
+	/*hide piece from its original pos on drag start*/
+	display: none;
+}
+
+.possible-move {
+	box-shadow: cadetblue 3px 4px 5px;
+}
