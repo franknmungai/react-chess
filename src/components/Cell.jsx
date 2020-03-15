@@ -5,7 +5,9 @@ import Piece from './Piece';
 const Cell = props => {
 	return (
 		<div
-			className={`piece ${props.light ? 'light' : 'dark'}`}
+			className={`piece ${props.light ? 'light' : 'dark'} ${
+				props.isPossibleMove ? 'possible-move' : ''
+			}`}
 			onDragOver={event => event.preventDefault()}
 			onDrop={event => props.onDrop(props.pos)} //Get the position of the cell we drop at
 		>

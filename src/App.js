@@ -5,22 +5,27 @@ import {
 	lightSquare,
 	createBoard,
 	createFenArray,
-	makeMove
+	makeMove,
+	highlightPossibleMoves
 } from './functions/game';
 import './App.css';
 import Cell from './components/Cell';
+import AudioPlay from './components/audio';
 
 const App = props => {
 	//The FEN representation of the board. Stored in state
-	const [fen, setFen] = useState(
-		'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
-	); //TODO: Get from ls
+	const startingFen =
+		localStorage.fen ||
+		'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+	const [fen, setFen] = useState(startingFen);
+	const [possibleMoves, setPossibleMoves] = useState([]);
 
 	const chess = new Chess(fen);
 	const turn = useRef(chess.turn()); //Control the turn
 	const currentPlaying = useRef();
 	const fromPos = useRef();
 	const toPos = useRef();
+	// const beat = useRef();
 	const board = createBoard(createFenArray(fen)); // [{name: 'a8', piece: 'r'},{},{}]
 	console.log(chess.ascii());
 	console.log(board);
@@ -29,13 +34,17 @@ const App = props => {
 		//sets the currenty playing piece and position
 		currentPlaying.current = piece;
 		fromPos.current = pos;
+
+		// setPossibleMoves(state => state.concat(highlightPossibleMoves(chess, pos))); //highlightPossibleMoves returns an array
+		const valid = highlightPossibleMoves(chess, pos);
+		setPossibleMoves(valid);
 	};
 
 	const onDropHandler = pos => {
 		toPos.current = pos; //set the position we want to move to
-		console.log(toPos.current);
 		makeMove(chess, currentPlaying.current, fromPos.current, toPos.current);
 		setFen(chess.fen());
+		// music.current.play();
 	};
 
 	const onDragOverHandler = cell => {
@@ -51,6 +60,7 @@ const App = props => {
 			piece={cell.piece} //b
 			pos={cell.name} //a1
 			key={index}
+			isPossibleMove={possibleMoves.includes(cell.name)}
 			light={lightSquare(index + 1)} //true
 			color={
 				isNaN(+cell.piece)
@@ -61,7 +71,6 @@ const App = props => {
 			}
 			onDragStart={(piece, pos) => {
 				//position drag starts
-				//TODO:Check if board is updated when fen changes in state
 				onDragStartHandler(piece, pos);
 			}}
 			onDrop={pos => {
@@ -72,7 +81,14 @@ const App = props => {
 		/>
 	));
 
-	return <Board>{markup}</Board>;
+	if (chess.game_over()) return <h1>Game Over</h1>;
+
+	return (
+		<Board>
+			{markup}
+			<AudioPlay />
+		</Board>
+	);
 };
 
 export default App;

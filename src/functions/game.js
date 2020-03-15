@@ -1,3 +1,4 @@
+import audio from '../images/hit.mp3';
 export const lightSquare = piece => {
 	const light = [
 		1,
@@ -83,18 +84,16 @@ export const createBoard = fenArray => {
 
 	return board;
 };
-export const highlightPossibleMoves = turn => {};
+export const highlightPossibleMoves = (chess, square) => {
+	//takes in chess object and position
+	const moves = chess.moves({ square });
+	console.log(moves);
+	return moves;
+};
 export const makeMove = (chess, piece, from, to) => {
 	//e.g p b1 b3
 	//*must take in the current instance of chess from the main game component
 
-	console.log(piece, from, to);
-	// let color = piece.toUpperCase() === piece ? 'w' : 'b';
-
-	// //TODO: Validate moves
-	const legal = chess.moves({ square: from });
-	console.log({ legal, to, from });
-	console.log(chess.turn());
 	// if (!legal.includes(to)) return; //if the square you want to move to is not legal, return
 
 	// chess.put({ type: piece, color: color }, to);
