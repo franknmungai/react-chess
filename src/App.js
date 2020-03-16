@@ -19,9 +19,9 @@ const App = props => {
 		'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 	const [fen, setFen] = useState(startingFen);
 	const [possibleMoves, setPossibleMoves] = useState([]);
+	const [gameOver, setGameOver] = useState(false);
 
 	const chess = new Chess(fen);
-	const turn = useRef(chess.turn()); //Control the turn
 	const currentPlaying = useRef();
 	const fromPos = useRef();
 	const toPos = useRef();
@@ -35,7 +35,6 @@ const App = props => {
 		currentPlaying.current = piece;
 		fromPos.current = pos;
 
-		// setPossibleMoves(state => state.concat(highlightPossibleMoves(chess, pos))); //highlightPossibleMoves returns an array
 		const valid = highlightPossibleMoves(chess, pos);
 		setPossibleMoves(valid);
 	};
@@ -44,7 +43,8 @@ const App = props => {
 		toPos.current = pos; //set the position we want to move to
 		makeMove(chess, currentPlaying.current, fromPos.current, toPos.current);
 		setFen(chess.fen());
-		// music.current.play();
+		setGameOver(chess.game_over());
+		setPossibleMoves([]);
 	};
 
 	const onDragOverHandler = cell => {
@@ -52,8 +52,8 @@ const App = props => {
 		draggedOverCells.push(cell);
 
 		toPos.current = draggedOverCells.pop(); //The very last cell we dropped the on
-		// console.log(toPos.current);
 	};
+
 	// ? Creating the chess cells
 	let markup = board.map((cell, index) => (
 		<Cell
@@ -81,13 +81,17 @@ const App = props => {
 		/>
 	));
 
-	if (chess.game_over()) return <h1>Game Over</h1>;
-
 	return (
-		<Board>
-			{markup}
-			<AudioPlay />
-		</Board>
+		<>
+			{!gameOver ? (
+				<Board>
+					{markup}
+					<AudioPlay />
+				</Board>
+			) : (
+				<h1>Game over</h1>
+			)}
+		</>
 	);
 };
 

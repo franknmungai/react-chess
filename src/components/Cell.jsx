@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import Piece from './Piece';
 
 const Cell = props => {
+	const divCell = useRef();
+
 	return (
 		<div
 			className={`piece ${props.light ? 'light' : 'dark'} ${
 				props.isPossibleMove ? 'possible-move' : ''
 			}`}
+			ref={divCell}
 			onDragOver={event => event.preventDefault()}
 			onDrop={event => props.onDrop(props.pos)} //Get the position of the cell we drop at
 		>

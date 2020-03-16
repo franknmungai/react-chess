@@ -1,4 +1,3 @@
-import audio from '../images/hit.mp3';
 export const lightSquare = piece => {
 	const light = [
 		1,
@@ -86,8 +85,10 @@ export const createBoard = fenArray => {
 };
 export const highlightPossibleMoves = (chess, square) => {
 	//takes in chess object and position
-	const moves = chess.moves({ square });
-	console.log(moves);
+	let moves = chess.moves({ square });
+	moves = moves.map(
+		move => `${move.charAt(move.length - 2)}${move.charAt(move.length - 1)}`
+	);
 	return moves;
 };
 export const makeMove = (chess, piece, from, to) => {
