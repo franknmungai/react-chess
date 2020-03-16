@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useReducer } from 'react';
 import Chess from 'chess.js';
 import Board from './components/Board';
 import {
@@ -11,6 +11,16 @@ import {
 import './App.css';
 import Cell from './components/Cell';
 import AudioPlay from './components/audio';
+import GameOver from './components/GameOver';
+import {
+	gameOverReducer,
+	initialState,
+	IN_CHECKMATE,
+	IN_STALEMATE,
+	IN_THREEFOLD_REPETITION,
+	IN_INSUFFICIENT_MATERIAL,
+	IN_DRAW
+} from './store/AppReducer';
 
 const App = props => {
 	//The FEN representation of the board. Stored in state
@@ -27,8 +37,8 @@ const App = props => {
 	const toPos = useRef();
 	// const beat = useRef();
 	const board = createBoard(createFenArray(fen)); // [{name: 'a8', piece: 'r'},{},{}]
-	console.log(chess.ascii());
-	console.log(board);
+
+	const [gameOverState, dispatch] = useReducer(gameOverReducer, initialState);
 
 	const onDragStartHandler = (piece, pos) => {
 		//sets the currenty playing piece and position
@@ -43,8 +53,17 @@ const App = props => {
 		toPos.current = pos; //set the position we want to move to
 		makeMove(chess, currentPlaying.current, fromPos.current, toPos.current);
 		setFen(chess.fen());
-		setGameOver(chess.game_over());
 		setPossibleMoves([]);
+
+		if (chess.game_over()) setGameOver(chess.game_over());
+
+		if (chess.in_checkmate()) dispatch({ type: IN_CHECKMATE });
+		if (chess.in_stalemate()) dispatch({ type: IN_STALEMATE });
+		if (chess.insufficient_material())
+			dispatch({ type: IN_INSUFFICIENT_MATERIAL });
+		if (chess.in_threefold_repetition())
+			dispatch({ type: IN_THREEFOLD_REPETITION });
+		if (chess.in_draw()) dispatch({ type: IN_DRAW });
 	};
 
 	const onDragOverHandler = cell => {
@@ -89,7 +108,7 @@ const App = props => {
 					<AudioPlay />
 				</Board>
 			) : (
-				<h1>Game over</h1>
+				<GameOver gameOverState={gameOverState} />
 			)}
 		</>
 	);
