@@ -35,7 +35,7 @@ const App = props => {
 	const currentPlaying = useRef();
 	const fromPos = useRef();
 	const toPos = useRef();
-	// const beat = useRef();
+
 	const board = createBoard(createFenArray(fen)); // [{name: 'a8', piece: 'r'},{},{}]
 
 	const [gameOverState, dispatch] = useReducer(gameOverReducer, initialState);

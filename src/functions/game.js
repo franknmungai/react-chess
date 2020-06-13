@@ -87,7 +87,7 @@ export const highlightPossibleMoves = (chess, square) => {
 	//takes in chess object and position
 	let moves = chess.moves({ square });
 	moves = moves.map(
-		move => `${move.charAt(move.length - 2)}${move.charAt(move.length - 1)}`
+		move => `${move.charAt(move.length - 2)}${move.charAt(move.length - 1)}` //oooh NF3 - NH3 F3 H3
 	);
 	return moves;
 };
