@@ -1,4 +1,4 @@
-export const lightSquare = piece => {
+export const lightSquare = (piece) => {
 	const light = [
 		1,
 		3,
@@ -31,7 +31,7 @@ export const lightSquare = piece => {
 		58,
 		60,
 		62,
-		64
+		64,
 	];
 
 	return light.includes(piece);
@@ -41,7 +41,7 @@ const range = (min, max) =>
 	Array.from({ length: max - min + 1 }, (_, i) => min + i);
 
 //*Create an array representation of the fen.
-export const createFenArray = fen => {
+export const createFenArray = (fen) => {
 	//Create a string representation of the board.
 	const fenItems = fen.replace(' ', '/').split('/'); //rows
 	const files = fenItems.slice(0, 8); //['rnbqkbnr', 'pppppppp', 8,8,8,8,'PPPPPPPP','RNBQKBNR']
@@ -60,6 +60,7 @@ export const createFenArray = fen => {
 	return localBoard.flat(1);
 };
 
+// * Creates the 64 cells array with their ids 'a1', 'b1' e.t.c
 const test = () => {
 	let a = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 	let files = [];
@@ -74,7 +75,7 @@ const test = () => {
 
 	return files.reverse().flat(1);
 };
-export const createBoard = fenArray => {
+export const createBoard = (fenArray) => {
 	const cells = test();
 
 	let board = cells.map((cell, index) => {
@@ -87,17 +88,13 @@ export const highlightPossibleMoves = (chess, square) => {
 	//takes in chess object and position
 	let moves = chess.moves({ square });
 	moves = moves.map(
-		move => `${move.charAt(move.length - 2)}${move.charAt(move.length - 1)}` //oooh NF3 - NH3 F3 H3
+		(move) => `${move.charAt(move.length - 2)}${move.charAt(move.length - 1)}` //oooh NF3 - NH3 F3 H3. Taking last and 2nd last
 	);
 	return moves;
 };
 export const makeMove = (chess, piece, from, to) => {
 	//e.g p b1 b3
-	//*must take in the current instance of chess from the main game component
+	//* must take in the current instance of chess from the main game component
 
-	// if (!legal.includes(to)) return; //if the square you want to move to is not legal, return
-
-	// chess.put({ type: piece, color: color }, to);
-	// chess.remove(from);
 	chess.move(`${from}-${to}`, { sloppy: true });
 };

@@ -5,11 +5,11 @@ const GameOver = ({
 	in_stalemate,
 	in_threefold_repetition,
 	in_insufficient_material,
-	in_draw
+	in_draw,
 }) => {
 	//TODO: ADD APPROPRIATE EMOJI
 
-	let message = `Game Over. `;
+	// let message = `Game Over. `;
 	return (
 		<div>
 			<h1>Game Over</h1>

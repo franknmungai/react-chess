@@ -6,11 +6,10 @@ import {
 	createBoard,
 	createFenArray,
 	makeMove,
-	highlightPossibleMoves
+	highlightPossibleMoves,
 } from './functions/game';
 import './App.css';
 import Cell from './components/Cell';
-import AudioPlay from './components/audio';
 import GameOver from './components/GameOver';
 import {
 	gameOverReducer,
@@ -19,16 +18,18 @@ import {
 	IN_STALEMATE,
 	IN_THREEFOLD_REPETITION,
 	IN_INSUFFICIENT_MATERIAL,
-	IN_DRAW
+	IN_DRAW,
 } from './store/AppReducer';
 
-const App = props => {
+const App = (props) => {
 	//The FEN representation of the board. Stored in state
 	const startingFen =
 		localStorage.fen ||
 		'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 	const [fen, setFen] = useState(startingFen);
+
 	const [possibleMoves, setPossibleMoves] = useState([]);
+
 	const [gameOver, setGameOver] = useState(false);
 
 	const chess = new Chess(fen);
@@ -49,14 +50,13 @@ const App = props => {
 		setPossibleMoves(valid);
 	};
 
-	const onDropHandler = pos => {
+	const onDropHandler = (pos) => {
 		toPos.current = pos; //set the position we want to move to
 		makeMove(chess, currentPlaying.current, fromPos.current, toPos.current);
-		setFen(chess.fen());
+		setFen(chess.fen()); //update the state with our new fen notation
 		setPossibleMoves([]);
 
 		if (chess.game_over()) setGameOver(chess.game_over());
-
 		if (chess.in_checkmate()) dispatch({ type: IN_CHECKMATE });
 		if (chess.in_stalemate()) dispatch({ type: IN_STALEMATE });
 		if (chess.insufficient_material())
@@ -64,9 +64,12 @@ const App = props => {
 		if (chess.in_threefold_repetition())
 			dispatch({ type: IN_THREEFOLD_REPETITION });
 		if (chess.in_draw()) dispatch({ type: IN_DRAW });
+
+		//Todo: emit socket event
 	};
 
-	const onDragOverHandler = cell => {
+	const onDragOverHandler = (cell) => {
+		//no longer useful
 		const draggedOverCells = [];
 		draggedOverCells.push(cell);
 
@@ -92,21 +95,18 @@ const App = props => {
 				//position drag starts
 				onDragStartHandler(piece, pos);
 			}}
-			onDrop={pos => {
+			onDrop={(pos) => {
 				//position player drops piece
 				onDropHandler(pos);
 			}}
-			onDragOver={dropPosition => onDragOverHandler(dropPosition)}
+			onDragOver={(dropPosition) => onDragOverHandler(dropPosition)}
 		/>
 	));
 
 	return (
 		<>
 			{!gameOver ? (
-				<Board>
-					{markup}
-					<AudioPlay />
-				</Board>
+				<Board>{markup}</Board>
 			) : (
 				<GameOver gameOverState={gameOverState} />
 			)}

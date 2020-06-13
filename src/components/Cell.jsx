@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import Piece from './Piece';
 
-const Cell = props => {
+const Cell = (props) => {
 	const divCell = useRef();
 
 	return (
@@ -11,10 +11,10 @@ const Cell = props => {
 				props.isPossibleMove ? 'possible-move' : ''
 			}`}
 			ref={divCell}
-			onDragOver={event => event.preventDefault()}
-			onDrop={event => props.onDrop(props.pos)} //Get the position of the cell we drop at
+			onDragOver={(event) => event.preventDefault()}
+			onDrop={() => props.onDrop(props.pos)} //Get the position of the cell we drop at
 		>
-			<span onDragOver={() => props.onDragOver(props.pos)}>
+			<span>
 				<Piece
 					piece={props.piece}
 					color={props.color}
@@ -32,7 +32,7 @@ Cell.propTypes = {
 	color: PropTypes.string.isRequired, //The color or piece either b or w
 	pos: PropTypes.string.isRequired, // e1
 	onDragStart: PropTypes.func.isRequired,
-	onDrop: PropTypes.func.isRequired
+	onDrop: PropTypes.func.isRequired,
 };
 
 export default Cell;

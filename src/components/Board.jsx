@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import '../App.css';
 
-const Board = props => {
+const Board = (props) => {
 	return <div className="board">{props.children}</div>;
 };
 
