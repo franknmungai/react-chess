@@ -96,5 +96,17 @@ export const makeMove = (chess, piece, from, to) => {
 	//e.g p b1 b3
 	//* must take in the current instance of chess from the main game component
 
-	chess.move(`${from}-${to}`, { sloppy: true });
+	try {
+		const { captured } = chess.move(`${from}-${to}`, { sloppy: true }); //take care of valid moves
+		if (captured) {
+			const player = chess.turn(); //this player just got a piece captured
+			console.log({ player, piece });
+
+			return { player, captured: captured.toUpperCase() }; //wB for white Bishop captured
+		}
+		return {}; //no data
+	} catch (error) {
+		//show some invalid move alert
+		return {};
+	}
 };

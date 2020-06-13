@@ -20,6 +20,7 @@ import {
 	IN_INSUFFICIENT_MATERIAL,
 	IN_DRAW,
 } from './store/AppReducer';
+import Captured from './components/Captured';
 
 const App = (props) => {
 	//The FEN representation of the board. Stored in state
@@ -29,6 +30,7 @@ const App = (props) => {
 	const [fen, setFen] = useState(startingFen);
 
 	const [possibleMoves, setPossibleMoves] = useState([]);
+	const [capturedPieces, setCapturedPieces] = useState([]);
 
 	const [gameOver, setGameOver] = useState(false);
 
@@ -52,10 +54,31 @@ const App = (props) => {
 
 	const onDropHandler = (pos) => {
 		toPos.current = pos; //set the position we want to move to
-		makeMove(chess, currentPlaying.current, fromPos.current, toPos.current);
+		const { captured, player } = makeMove(
+			chess,
+			currentPlaying.current,
+			fromPos.current,
+			toPos.current
+		);
 		setFen(chess.fen()); //update the state with our new fen notation
 		setPossibleMoves([]);
+		console.log(capturedPieces);
 
+		if (captured) {
+			setCapturedPieces(
+				capturedPieces.concat({
+					player, //w (color)
+					captured, //B  (piece)
+				})
+			);
+		}
+
+		gameOverCheck();
+
+		//Todo: emit socket event
+	};
+
+	const gameOverCheck = () => {
 		if (chess.game_over()) setGameOver(chess.game_over());
 		if (chess.in_checkmate()) dispatch({ type: IN_CHECKMATE });
 		if (chess.in_stalemate()) dispatch({ type: IN_STALEMATE });
@@ -64,18 +87,7 @@ const App = (props) => {
 		if (chess.in_threefold_repetition())
 			dispatch({ type: IN_THREEFOLD_REPETITION });
 		if (chess.in_draw()) dispatch({ type: IN_DRAW });
-
-		//Todo: emit socket event
 	};
-
-	const onDragOverHandler = (cell) => {
-		//no longer useful
-		const draggedOverCells = [];
-		draggedOverCells.push(cell);
-
-		toPos.current = draggedOverCells.pop(); //The very last cell we dropped the on
-	};
-
 	// ? Creating the chess cells
 	let markup = board.map((cell, index) => (
 		<Cell
@@ -99,14 +111,17 @@ const App = (props) => {
 				//position player drops piece
 				onDropHandler(pos);
 			}}
-			onDragOver={(dropPosition) => onDragOverHandler(dropPosition)}
 		/>
 	));
 
 	return (
 		<>
 			{!gameOver ? (
-				<Board>{markup}</Board>
+				<div className="game">
+					<Captured color="b" pieces={capturedPieces} />
+					<Board>{markup}</Board>
+					<Captured color="w" pieces={capturedPieces} />
+				</div>
 			) : (
 				<GameOver gameOverState={gameOverState} />
 			)}

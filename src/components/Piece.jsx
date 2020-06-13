@@ -36,7 +36,7 @@ const Piece = (props) => {
 Piece.propTypes = {
 	piece: PropTypes.string.isRequired, //the piece the cell currently holds e.g b(bishop)
 	color: PropTypes.string.isRequired, //The color or piece either b or w
-	pos: PropTypes.string.isRequired, // e1
+	pos: PropTypes.string, // e1
 };
 
 export default Piece;

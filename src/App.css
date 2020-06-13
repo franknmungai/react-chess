@@ -1,3 +1,8 @@
+.game {
+	display: grid;
+	padding: 1rem;
+	grid-template-columns: 0.5fr 6fr 0.5fr;
+}
 .board {
 	padding: 1rem;
 	margin: 3.5rem auto; /** centered */
